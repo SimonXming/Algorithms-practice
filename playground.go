@@ -7,6 +7,7 @@ func main() {
 	var b *int = &a
 	var c **int = &b
 	var x int = *b
+	fmt.Println(a == *b)
 	fmt.Println("a = ", a)
 	fmt.Println("&a = ", &a)
 	fmt.Println("*&a = ", *&a)
