@@ -2,19 +2,18 @@ package main
 
 import (
 	"fmt"
+	"github.com/SimonXming/Algorithms-practice/lib"
+	"sort"
 )
 
 type testInt func() bool // 声明了一个函数类型
 
 func main() {
-	// x := base_struct_one.Item{
-	// 	Data: "data",
-	// }
-	// y := base_struct_one.Bag()
-	// fmt.Printf(x.Data + "\n")
-	// fmt.Printf(y)
-	// fmt.Printf("hello, world, %v\n", base_struct_one.Sqrt(2))
-	fmt.Printf("hello, world %v\n", "!")
+	var y lib.IntSlice
+	x := lib.IntSlice{1, 2, 3, 4, 5}
+	sort.Sort(x)
+
+	fmt.Println(sort.Search(len(x), func(i int) bool { return x[i] >= 1 }))
 	throwsPanic(some_panic)
 }
 
