@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/SimonXming/Algorithms-practice/lib"
+	"github.com/SimonXming/Algorithms-practice/settings"
 	"os"
 	"path/filepath"
 	"sort"
@@ -12,7 +13,7 @@ import (
 	"time"
 )
 
-const dataBase = "/Users/simon/Code/go/src/github.com/SimonXming/Algorithms-practice/data"
+var dataBase = settings.DataBase
 
 // readLines reads a whole file into memory
 // and returns a slice of its lines.
