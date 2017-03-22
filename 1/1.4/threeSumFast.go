@@ -4,9 +4,11 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/SimonXming/Algorithms-practice/lib"
 	"github.com/SimonXming/Algorithms-practice/settings"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -19,14 +21,14 @@ var (
 
 // readLines reads a whole file into memory
 // and returns a slice of its lines.
-func readLines(path string) ([]int, error) {
+func readLines(path string) (lib.IntSlice, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	var lines []int
+	var lines lib.IntSlice
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 
@@ -39,13 +41,17 @@ func readLines(path string) ([]int, error) {
 	return lines, scanner.Err()
 }
 
-func twoSumCount(numbers []int) int {
+func threeSumCount(numbers lib.IntSlice) int {
 	count := 0
+	sort.Sort(numbers)
 	numCount := len(numbers)
 	for a := 0; a < numCount; a++ {
 		for b := a + 1; b < numCount; b++ {
-			if sum := numbers[a] + numbers[b]; sum == 0 {
-				count++
+			c_index := sort.SearchInts(numbers, -(numbers[a] + numbers[b]))
+			if c_index != numCount {
+				if sum := numbers[a] + numbers[b] + +numbers[c_index]; sum == 0 && b < c_index {
+					count++
+				}
 			}
 		}
 	}
@@ -62,6 +68,7 @@ func main() {
 		fmt.Println("No data filename provide.")
 		os.Exit(2)
 	}
+
 	filePath := filepath.Join(dataBase, *filenameFlag)
 
 	lines, err := readLines(filePath)
@@ -70,7 +77,7 @@ func main() {
 		os.Exit(2)
 	}
 	start := time.Now()
-	count := twoSumCount(lines)
+	count := threeSumCount(lines)
 	end := time.Now()
 	delta := end.Sub(start)
 

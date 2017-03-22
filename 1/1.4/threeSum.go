@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"github.com/SimonXming/Algorithms-practice/settings"
 	"os"
@@ -11,7 +12,10 @@ import (
 	"time"
 )
 
-var dataBase = settings.DataBase
+var (
+	dataBase     = settings.DataBase
+	filenameFlag = flag.String("filename", "", "Description")
+)
 
 // readLines reads a whole file into memory
 // and returns a slice of its lines.
@@ -50,9 +54,18 @@ func threeSumCount(numbers []int) int {
 	return count
 }
 
+func init() {
+	flag.StringVar(filenameFlag, "f", "", `filename`)
+}
+
 func main() {
-	filename := "2Kints.txt"
-	filePath := filepath.Join(dataBase, filename)
+	flag.Parse()
+	if *filenameFlag == "" {
+		fmt.Println("No data filename provide.")
+		os.Exit(2)
+	}
+
+	filePath := filepath.Join(dataBase, *filenameFlag)
 
 	lines, err := readLines(filePath)
 	if err != nil {

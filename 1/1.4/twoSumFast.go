@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"github.com/SimonXming/Algorithms-practice/lib"
 	"github.com/SimonXming/Algorithms-practice/settings"
@@ -13,7 +14,10 @@ import (
 	"time"
 )
 
-var dataBase = settings.DataBase
+var (
+	dataBase     = settings.DataBase
+	filenameFlag = flag.String("filename", "", "Description")
+)
 
 // readLines reads a whole file into memory
 // and returns a slice of its lines.
@@ -42,20 +46,27 @@ func twoSumCount(numbers lib.IntSlice) int {
 	sort.Sort(numbers)
 	numCount := len(numbers)
 	for a := 0; a < numCount; a++ {
-		// fmt.Println(a)
 		b_index := sort.SearchInts(numbers, -numbers[a])
-		// fmt.Println(b_index)
-
-		if sum := numbers[a] + numbers[b_index]; sum == 0 && a < b_index {
-			count++
+		if b_index != numCount {
+			if sum := numbers[a] + numbers[b_index]; sum == 0 && a < b_index {
+				count++
+			}
 		}
 	}
 	return count
 }
 
+func init() {
+	flag.StringVar(filenameFlag, "f", "", `filename`)
+}
+
 func main() {
-	filename := "1Kints.txt"
-	filePath := filepath.Join(dataBase, filename)
+	flag.Parse()
+	if *filenameFlag == "" {
+		fmt.Println("No data filename provide.")
+		os.Exit(2)
+	}
+	filePath := filepath.Join(dataBase, *filenameFlag)
 
 	lines, err := readLines(filePath)
 	if err != nil {
