@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Pair struct {
@@ -32,17 +33,18 @@ func (uf *UF) Count() int {
 	return uf.count
 }
 
-func (uf *UF) Find(p int) int {
+func (uf *UF) QuickFind(p int) int {
+	// 寻找 p 所处的分量
 	return uf.id[p]
 }
 
 func (uf *UF) Connected(p int, q int) bool {
-	return uf.Find(p) == uf.Find(q)
+	return uf.QuickFind(p) == uf.QuickFind(q)
 }
 
 func (uf *UF) Union(p int, q int) {
-	pID := uf.Find(p)
-	qID := uf.Find(q)
+	pID := uf.QuickFind(p)
+	qID := uf.QuickFind(q)
 
 	if pID == qID {
 		// This mean q and p in the same 分量
@@ -94,6 +96,10 @@ func readDataFromFile(path string) (N int, pairs []Pair, e error) {
 	return N, pairs, nil
 }
 
+func init() {
+	flag.StringVar(filenameFlag, "f", "", `filename`)
+}
+
 func main() {
 	flag.Parse()
 	if *filenameFlag == "" {
@@ -107,18 +113,23 @@ func main() {
 		fmt.Println(err)
 		os.Exit(2)
 	}
+	start := time.Now()
+
 	uf := newUF(n)
 
 	for _, pair := range pairs {
 		p, q := pair.Items[0], pair.Items[1]
-		fmt.Printf("Check connected, %d %d \r\n%t \r\n", p, q, uf.Find(p) == uf.Find(q))
+		// fmt.Printf("Check connected, %d %d \r\n%t \r\n", p, q, uf.Find(p) == uf.Find(q))
 		if uf.Connected(p, q) {
 			continue
 		}
-		fmt.Println("Before UNION", uf.id)
+		// fmt.Println("Before UNION", uf.id)
 		uf.Union(p, q)
 		fmt.Println(p, " + ", q)
-		fmt.Println("After UNION", uf.id)
+		// fmt.Println("After UNION", uf.id)
 	}
-	fmt.Println(uf.Count(), "components")
+	end := time.Now()
+	delta := end.Sub(start)
+
+	fmt.Printf("%d components, time: %s \n", uf.Count(), delta)
 }
