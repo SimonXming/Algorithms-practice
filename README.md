@@ -11,6 +11,20 @@ Algorithms Fourth Edition -- Robert Sedgewick, Kevin Wayne
 
 ## Note
 
+### Testing
+
+For convenience reason, __main__ package in every chapter directory. 
+
+For testing a specific chapter directory, you should 
+
+```shell
+cd chapter_directory/
+# go test -v
+go test -v test_something.go
+```
+
+### Data path
+
 All code related **DATA** can be found on top of the source code.
 
 example: 

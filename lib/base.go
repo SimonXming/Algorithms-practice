@@ -24,7 +24,7 @@ type EnhanceBaseSort interface {
 	// defined a way to print this collection
 	Show()
 
-	isSorted() bool
+	IsSorted() bool
 }
 
 type IntSlice []int

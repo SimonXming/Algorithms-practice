@@ -2,20 +2,32 @@ package main
 
 import "fmt"
 
+// Parent Object.
+type Object struct{}
+
+func (b Object) String() string {
+	return "I am an Object"
+}
+
+type ObjectOne struct {
+	Object
+}
+
+type ObjectTwo struct {
+	Object
+}
+
+func (b ObjectTwo) String() string {
+	return "I am an Object Two"
+}
+
 func main() {
-	done := make(chan bool)
+	o := Object{}
+	fmt.Println(o) // I am an Object
 
-	values := []string{"a", "b", "c"}
-	for _, v := range values {
-		fmt.Println(v)
-		go func(u string) {
-			fmt.Println(u)
-			done <- true
-		}(v)
-	}
+	o1 := ObjectOne{}
+	fmt.Println(o1) // I am an Object
 
-	// wait for all goroutines to complete before exiting
-	for _ = range values {
-		<-done
-	}
+	o2 := ObjectTwo{}
+	fmt.Println(o2) // I am an Object Two
 }
