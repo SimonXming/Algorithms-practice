@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+var readIDListCount int = 0
+
 type Pair struct {
 	Items []int
 }
@@ -41,6 +43,7 @@ func (uf *UF) Find(p int) int {
 	// 沿着树结构寻找根节点
 	// 根节点的触点值代表了这个分量
 	for p != uf.id[p] {
+		readIDListCount++
 		p = uf.id[p]
 	}
 	return p
@@ -61,9 +64,11 @@ func (uf *UF) QuickUnion(p int, q int) {
 	// 根据分量的大小判断根节点的指向 q -> p 或者 p -> q
 	// 这就是说 q p 所处的两个分量联合在一起
 	if uf.sz[pRoot] < uf.sz[qRoot] {
+		readIDListCount++
 		uf.id[pRoot] = uf.id[qRoot]
 		uf.sz[qRoot] += uf.id[pRoot]
 	} else {
+		readIDListCount++
 		uf.id[qRoot] = uf.id[pRoot]
 		uf.sz[pRoot] += uf.id[qRoot]
 	}
@@ -142,4 +147,5 @@ func main() {
 	delta := end.Sub(start)
 
 	fmt.Printf("%d components, time: %s \n", uf.Count(), delta)
+	fmt.Println("readIDListCount: %d", readIDListCount)
 }

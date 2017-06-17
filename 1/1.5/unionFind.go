@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+var readIDListCount int = 0
+
 type Pair struct {
 	Items []int
 }
@@ -35,6 +37,7 @@ func (uf *UF) Count() int {
 
 func (uf *UF) QuickFind(p int) int {
 	// 寻找 p 所处的分量
+	readIDListCount++
 	return uf.id[p]
 }
 
@@ -54,6 +57,7 @@ func (uf *UF) Union(p int, q int) {
 	// 这就是说 q p 所处的两个分量联合在一起
 	for i := 0; i < len(uf.id); i++ {
 		if uf.id[i] == pID {
+			readIDListCount++
 			uf.id[i] = qID
 		}
 	}
@@ -132,4 +136,5 @@ func main() {
 	delta := end.Sub(start)
 
 	fmt.Printf("%d components, time: %s \n", uf.Count(), delta)
+	fmt.Println("readIDListCount: %d", readIDListCount)
 }

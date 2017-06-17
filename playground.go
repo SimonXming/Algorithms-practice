@@ -1,14 +1,21 @@
 package main
 
-import (
-	"fmt"
-	// "strings"
-)
-
-// var items []int
+import "fmt"
 
 func main() {
-	for i := 1; i <= 10; i++ {
-		fmt.Println(i)
+	done := make(chan bool)
+
+	values := []string{"a", "b", "c"}
+	for _, v := range values {
+		fmt.Println(v)
+		go func(u string) {
+			fmt.Println(u)
+			done <- true
+		}(v)
+	}
+
+	// wait for all goroutines to complete before exiting
+	for _ = range values {
+		<-done
 	}
 }
