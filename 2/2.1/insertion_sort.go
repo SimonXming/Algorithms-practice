@@ -16,34 +16,32 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"github.com/SimonXming/Algorithms-practice/lib"
 	"github.com/SimonXming/Algorithms-practice/settings"
-	"os"
 	"path/filepath"
-	"strings"
 )
 
-type CharSlice []string
+type FloatSlice []float32
 
-func (c *CharSlice) Len() int {
+func (c *FloatSlice) Len() int {
 	return len(*c)
 }
-func (c *CharSlice) RigheSwap(i, j int) {
+func (c *FloatSlice) RigheSwap(i, j int) {
 	(*c)[i], (*c)[j] = (*c)[j], (*c)[i]
 }
-func (c *CharSlice) Swap(i, j int) {
+func (c *FloatSlice) Swap(i, j int) {
 	(*c)[i], (*c)[j] = (*c)[j], (*c)[i]
 }
-func (c *CharSlice) Less(i, j int) bool {
+func (c *FloatSlice) Less(i, j int) bool {
 	// for single character, compare symbol (like < >) work too.
 	return (*c)[i] < (*c)[j]
 }
-func (c *CharSlice) Show() {
+func (c *FloatSlice) Show() {
 	fmt.Printf("%v\n", *c)
 }
 
-func (c *CharSlice) InsertionSort() {
+func (c *FloatSlice) InsertionSort() {
 	// 获取待排序的列表长度
 	length := c.Len()
 	// 逐次遍历列表
@@ -64,35 +62,19 @@ var (
 	dataBase = settings.DataBase
 )
 
-// readLines reads a whole file into memory
-// and returns a slice of its lines.
-func readDataFromFile(path string) (char_slice CharSlice, e error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
+func newCollection(path string, count int) *FloatSlice {
+	origin_slice := lib.GenRandomFloatSlice(count)
+	collection := make(FloatSlice, 0)
+	for _, num := range origin_slice {
+		collection = append(collection, num)
 	}
-	defer file.Close()
-
-	char_slice = make(CharSlice, 0)
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		chars := strings.Split(scanner.Text(), " ")
-		for _, c := range chars {
-			char_slice = append(char_slice, c)
-		}
-	}
-	return char_slice, nil
-}
-
-func newCollectionFromFile(path string) *CharSlice {
-	collection, _ := readDataFromFile(path)
 	return &collection
 }
 
 func main() {
 	filePath := filepath.Join(dataBase, "21elementary", "tiny.txt")
 	// filePath := filepath.Join(dataBase, "21elementary", "tiny.txt")
-	s_slict := newCollectionFromFile(filePath)
+	s_slict := newCollection(filePath, 100)
 	s_slict.InsertionSort()
 	s_slict.Show()
 }
