@@ -76,6 +76,7 @@ func (c *CharSlice) ShellSort() {
 			}
 		}
 		h = h / 3
+		// 最终 h = 1 时，开始把之前已经部分排序的数组进行完整排序。
 	}
 }
 
